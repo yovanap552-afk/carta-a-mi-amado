@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta de Amor ❤️</title>
+
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #120b10;
+        font-family: 'Georgia', serif;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Fondo de corazones flotantes */
+    .corazon-flotante {
+        position: absolute;
+        bottom: -50px;
+        color: #9f3d5c;
+        opacity: 0.6;
+        animation: flotar 6s linear infinite;
+        user-select: none;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes flotar {
+        0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+        100% { transform: translateY(-105vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Contenedor Fijo Unificado */
+    .contenedor-libro {
+        width: 90%;
+        max-width: 380px;
+        height: 620px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .pagina {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff7f2;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 20px rgba(159, 61, 92, 0.3);
+        padding: 20px;
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Muestra SOLO la página activa */
+    .pagina.activa {
+        display: flex !important;
+    }
+
+    h1 { color: #8f3150; font-size: 22px; line-height: 1.2; }
+    h2 { color: #8f3150; font-size: 18px; margin-bottom: 6px; }
+    p { color: #4a3038; font-size: 13px; line-height: 1.4; }
+
+    .texto-scroll {
+        max-height: 260px;
+        overflow-y: auto;
+        padding: 0 5px;
+        text-align: justify;
+        margin: 8px 0;
+    }
+
+    .numero-pagina { font-size: 11px; color: #8f3150; opacity: 0.6; }
+
+    .foto-marco {
+        width: 100%;
+        height: 170px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        background: #e8d5cf;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 6px 0;
+        position: relative;
+    }
+
+    .foto-marco img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .foto-rotada { transform: rotate(90deg) scale(1.3); }
+
+    /* Botones de subida directa */
+    .btn-cargar-foto {
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+        background: rgba(18, 11, 16, 0.8);
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        cursor: pointer;
+        z-index: 5;
+    }
+
+    .btn-subir-musica {
+        background: #9f3d5c;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        cursor: pointer;
+    }
+
+    .contenedor-botones {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    button {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 25px;
+        background: #9f3d5c;
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button.secundario { background: #e8d5cf; color: #4a3038; }
+
+    /* Reproductor Superior */
+    .reproductor-superior {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        background: rgba(18, 11, 16, 0.85);
+        border: 1px solid #9f3d5c;
+        padding: 6px 14px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-size: 12px;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Reproductor de Música Fijo Siempre Visible -->
+<div class="reproductor-superior">
+    <span id="nombreCancion">🎵 Kevin Kaarl - Vámonos a Marte</span>
+    <audio id="musicaFondo" controls loop style="height: 30px; width: 120px;">
+        <source src="https://ia801503.us.archive.org/15/items/kevin-kaarl-vamonos-a-marte/Kevin%20Kaarl%20-%20V%C3%A1monos%20a%20Marte.mp3" type="audio/mpeg">
+    </audio>
+    <label class="btn-subir-musica">
+        📁 MP3
+        <input type="file" accept="audio/*" onchange="subirCancion(event)" style="display: none;">
+    </label>
+</div>
+
+<div class="contenedor-libro">
+
+    <!-- PAGINA 1 -->
+    <div class="pagina activa" id="pag-1">
+        <h1>Con todo el amor del mundo ❤️</h1>
+        <div class="foto-marco">
+            <img id="img1" src="1000069898.jpg" alt="Foto 1" class="foto-rotada" onerror="this.src='https://via.placeholder.com/300x200?text=Foto+1+no+encontrada'">
+            <label class="btn-cargar-foto">
+                📸 Cambiar
+                <input type="file" accept="image/*" onchange="subirFoto(event, 'img1')" style="display: none;">
+            </label>
+        </div>
+        <p>Te hice la carta más difícil y hermosa que he hecho, para que veas que aunque estemos lejos te puedo hacer feliz.</p>
+        <span class="numero-pagina">Página 1 de 5</span>
+        <button type="button" onclick="cambiarPagina(2)">Abrir nuestra historia ✨</button>
+    </div>
+
+    <!-- PAGINA 2 -->
+    <div class="pagina" id="pag-2">
+        <h2>Nuestros 2 años juntos 🥂</h2>
+        <div class="texto-scroll">
+            <p>Gracias por todos los momentos hermosos que he pasado contigo mi amor lindo, por todas las sonrisas que me has hecho sacar, también por los malos, aunque han sido más los lindos que los malos y eso te lo agradezco y te define como el gran hombre que eres. Ya son dos añitos que estamos cumpliendo, los dos añitos más bonitos de mi vida. No pensé encontrar tan rápido el amor de verdad. Contigo todo ha sido muy lindo, muy bonito. Han sido momentos de verdad hermosos que me han hecho sentir muy amada. Me has enseñado lo que es el amor, lo que es respetar a la persona con la que estás. Son tantas cosas que no sé ni cómo escribirlas, simplemente tengo mucha emoción por saber que ya son dos años en los que me has tratado como una reina. 👑❤️</p>
+        </div>
+        <div class="foto-marco" style="height: 120px;">
+            <img id="img2" src="1000069484.jpg" alt="Foto 2" onerror="this.src='https://via.placeholder.com/300x200?text=Foto+2+no+encontrada'">
+            <label class="btn-cargar-foto">
+                📸 Cambiar
+                <input type="file" accept="image/*" onchange="subirFoto(event, 'img2')" style="display: none;">
+            </label>
+        </div>
+        <span class="numero-pagina">Página 2 de 5</span>
+        <div class="contenedor-botones">
+            <button type="button" class="secundario" onclick="cambiarPagina(1)">Atrás</button>
+            <button type="button" onclick="cambiarPagina(3)">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- PAGINA 3 -->
+    <div class="pagina" id="pag-3">
+        <h2>Feliz aniversario, mi amor 🎉</h2>
+        <div class="texto-scroll" style="max-height: 140px;">
+            <p>Te amo con todas las fuerzas de mi corazoncito, espero sigamos cumpliendo más añitos juntos. Espero que el próximo lo podamos celebrar juntos porque son momentos especiales y fechas especiales que me encantaría pasar a tu lado. Te amo, mi amor.</p>
+        </div>
+        <div class="foto-marco" style="height: 150px;">
+            <img id="img3" src="foto3.jpg" alt="Foto 3" onerror="this.src='https://via.placeholder.com/300x200?text=Foto+3+no+encontrada'">
+            <label class="btn-cargar-foto">
+                📸 Cambiar
+                <input type="file" accept="image/*" onchange="subirFoto(event, 'img3')" style="display: none;">
+            </label>
+        </div>
+        <span class="numero-pagina">Página 3 de 5</span>
+        <div class="contenedor-botones">
+            <button type="button" class="secundario" onclick="cambiarPagina(2)">Atrás</button>
+            <button type="button" onclick="cambiarPagina(4)">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- PAGINA 4 -->
+    <div class="pagina" id="pag-4">
+        <h2>Te extraño demasiado 🥺</h2>
+        <div class="texto-scroll" style="max-height: 320px;">
+            <p>Quisiera estar contigo ahorita, darte muchos besitos, abrazos y decirte cuánto te amo. Y aunque estemos lejos, yo trataré siempre de hacerte sentir amado, de hacerte sentir especial, de hacerte sentir cerquita de mí y hacerte dar esa paz y amor que tanto buscas.<br><br>No sabes cuánto te extraño y las ganas que tengo de verte, de abrazarte y de estar contigo. Ojalá pronto nos podamos ver, ya que ahorita no se nos dio. Pronto vamos a estar juntos de nuevo. ❤️✨</p>
+        </div>
+        <span class="numero-pagina">Página 4 de 5</span>
+        <div class="contenedor-botones">
+            <button type="button" class="secundario" onclick="cambiarPagina(3)">Atrás</button>
+            <button type="button" onclick="cambiarPagina(5)">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- PAGINA 5 -->
+    <div class="pagina" id="pag-5">
+        <h2>Amor de mi vida, dejemos de pelear ❤️</h2>
+        <div class="texto-scroll" style="max-height: 340px;">
+            <p>Sé que últimamente hemos tenido muchos problemas y muchas peleas. Y este final de esta cartita no es tanto como tan amor, sino que quiero que hablemos y dejemos tantas peleas. Estamos lejos y no nos hace bien tanta peleadera, ya que nos está afectando en la relación.<br><br>Yo sé que tú me amas y tú sabes que yo te amo y por eso te pido que dejemos el orgullo, dejemos tantas peleas y tantos problemas por cosas que realmente son bobas. Pero cuando digo bobas no me refiero a que el problema no tenga importancia, sino que no son de una magnitud grande como una infidelidad o algo así. Esas sí son una pelea grande que no tiene solución. Nuestras peleas sí tienen solución y por eso te pido que hablemos, que las solucionemos, que no nos volvamos a faltar el respeto, que le demos prioridad a nuestra relación, que tratemos de solucionar los problemas. Porque al fin y al cabo eso fue lo que nos dijimos cuando nos separamos.<br><br>Y así como yo lloré, tú también lloraste y yo sé que tú también me quieres y me amas. Así que dejemos las bobadas, dejemos las peleas, hablemos las cosas por las buenas cuando algo nos moleste o no nos guste. Digámoslo al otro y de una manera bonita le buscamos una solución para todo. No hay en soluciones, es imposible que para nuestros problemas no vaya a haber solución.<br><br>Entonces, hablemos bien las cosas, mi amor. Y te amo mucho y traté de hacerte una cartita bonita, espero que te guste. Eso no sé cómo me lo inventé, es como con un programador y pues ya 🤭.<br><br><b>Te amo muchísimo, te adoro. ❤️✨</b></p>
+        </div>
+        <span class="numero-pagina">Página 5 de 5</span>
+        <div class="contenedor-botones">
+            <button type="button" class="secundario" onclick="cambiarPagina(1)">Volver al Inicio 🔄</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function cambiarPagina(numeroPagina) {
+        const paginas = document.querySelectorAll('.pagina');
+        paginas.forEach(p => p.classList.remove('activa'));
+
+        const paginaDestino = document.getElementById('pag-' + numeroPagina);
+        if (paginaDestino) {
+            paginaDestino.classList.add('activa');
+        }
+    }
+
+    function subirFoto(event, targetImgId) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById(targetImgId);
+                if (img) img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function subirCancion(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const player = document.getElementById('musicaFondo');
+            const label = document.getElementById('nombreCancion');
+            player.src = URL.createObjectURL(file);
+            player.play();
+            label.innerText = '🎵 ' + file.name;
+        }
+    }
+
+    function crearCorazon() {
+        const corazon = document.createElement('div');
+        corazon.classList.add('corazon-flotante');
+        const iconos = ['❤️', '💖', '✨', '💕', '🌹'];
+        corazon.innerText = iconos[Math.floor(Math.random() * iconos.length)];
+        corazon.style.left = Math.random() * 100 + 'vw';
+        corazon.style.animationDuration = Math.random() * 3 + 4 + 's';
+        corazon.style.fontSize = Math.random() * 15 + 15 + 'px';
+        document.body.appendChild(corazon);
+        setTimeout(() => { corazon.remove(); }, 7000);
+    }
+
+    setInterval(crearCorazon, 400);
+</script>
+
+</body>
+</html>
